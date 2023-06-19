@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         binding.mainEditTextSearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                String searchTerm = textView.getText().toString().trim();
                 loadList(1);
                 return true;
             }
@@ -190,26 +189,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_COUNTRY_REQ_CODE) {
+            // Check if the result is successful
             if (resultCode == RESULT_OK) {
                 assert data != null;
+                // Get the ID of the added country from the intent data
                 int addedCountryId = data.getIntExtra("added_country_id", -1);
+                // Retrieve the added country from the database using the ID
                 Country addedCountry = databaseMethods.getCountry(addedCountryId);
                 if (addedCountry != null) {
+                    // Reload the list with the added country on the first page
                     loadList(1);
                 }
             }
         } else if (requestCode == UPDATE_COUNTRY_REQ_CODE) {
+            // Check if the result is successful
             if (resultCode == RESULT_OK) {
                 assert data != null;
+                // Get the ID of the updated country from the intent data
                 int updatedCountryId = data.getIntExtra("updated_country_id", -1);
+                // Retrieve the updated country from the database using the ID
                 Country updatedCountry = databaseMethods.getCountry(updatedCountryId);
                 if (updatedCountry != null) {
-                    int currentPageRef =  currentPage;
+                    int currentPageRef = currentPage;
+                    // Reload the list with the updated country on the first page
                     loadList(1);
-                    if(currentPageRef > totalPages) {
+                    if (currentPageRef > totalPages) {
+                        // If the previous current page is greater than the total pages, load the last page
                         loadList(totalPages);
-                    }
-                    else {
+                    } else {
+                        // Otherwise, load the previous current page
                         loadList(currentPageRef);
                     }
                 }
@@ -219,58 +227,98 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @SuppressLint("DefaultLocale")
     private void loadList(int pageNumber) {
+        // Log the requested page number
         Log.d(TAG, "loadList: Requesting to load" + pageNumber);
+
+        // Initialize the search query variable
         String searchForCountryName = null;
+
+        // Check if the search EditText is visible
         if(binding.mainEditTextSearch.getVisibility() == View.VISIBLE) {
-            //noinspection ConstantConditions
+            // Get the search query text and trim any leading/trailing spaces
             searchForCountryName = binding.mainEditTextSearch.getText().toString().trim();
+
+            // Check if the search query is empty
             if(searchForCountryName.isEmpty()) {
+                // If empty, set the search query to null and clear the adapter's search query
                 searchForCountryName = null;
                 countryAdapter.setSearchQuery(null);
             }
             else {
+                // If not empty, set the search query in the adapter
                 countryAdapter.setSearchQuery(searchForCountryName);
             }
         }
+
+        // Get the total number of countries based on the search query
         totalCountries = databaseMethods.getTotalCountries(searchForCountryName);
+
+        // Calculate the total number of pages based on the total countries
         totalPages = databaseMethods.getTotalPages(totalCountries);
+
+        // Check if there are no pages
         if (totalPages == 0) {
+            // Log the absence of pages
             Log.d(TAG, "loadList: No Pages Found" + totalPages + " Pages");
+
+            // Clear the countries list and set it in the adapter
             setCountries(new ArrayList<>());
             countryAdapter.setCountries(countries);
+
+            // Reset the current page and hide the pagination container
             currentPage = 1;
             binding.mainPaginationContainer.setVisibility(View.GONE);
             return;
         }
+
+        // Log the total number of pages
         Log.d(TAG, "loadList: Total Pages: " + totalPages);
 
+        // Check if the requested page number is less than 1
         if (pageNumber < 1) {
+            // Show a toast message indicating an invalid page number
             Toast.makeText(this, "You are trying to load the 0th page", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Check if the requested page number is greater than the total number of pages
         if (pageNumber > totalPages) {
-            Toast.makeText(this, "You are trying to load the page does not exists", Toast.LENGTH_SHORT).show();
+            // Show a toast message indicating a non-existent page number
+            Toast.makeText(this, "You are trying to load the page does not exist", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Set the current page to the requested page number
         currentPage = pageNumber;
+
+        // Retrieve the list of countries for the current page and search query
         countries = databaseMethods.getCountries(pageNumber, searchForCountryName);
+
+        // Set the retrieved countries list in the adapter
         countryAdapter.setCountries(countries);
+
+        // Scroll the RecyclerView to the top position
         //noinspection ConstantConditions
         binding.mainRecyclerView.getLayoutManager().scrollToPosition(0);
 
+        // Check the total number of pages to determine the visibility of the pagination container
         if (totalPages <= 1) {
             binding.mainPaginationContainer.setVisibility(View.GONE);
         } else {
             binding.mainPaginationContainer.setVisibility(View.VISIBLE);
+
+            // Set the page info text with the current page number and total pages
             binding.mainTextViewPageInfo.setText(String.format("Page\n%02d/%02d", currentPage, totalPages));
+
+            // Set the total items text with the number of countries shown and the total number of countries
             binding.mainTextViewTotalItems.setText(String.format("Showing\n%02d/%02d", countries.size(), totalCountries));
         }
 
+        // Enable/disable the next and previous buttons based on the current page number
         binding.mainBtnNext.setEnabled(currentPage != totalPages);
         binding.mainBtnPrev.setEnabled(currentPage != 1);
     }
+
 
     @Override
     public void onEditCountryButtonClicked(Country country) {
@@ -282,17 +330,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void onDeleteCountryButtonClicked(Country country, int position) {
+        // Delete the country from the database
         databaseMethods.deleteCountry(country);
+
+        // Check if the current page is the last page and there is only one country left on that page
         if(currentPage == totalPages && countries.size() == 1) {
+            // Check if there are more than one page in total
             if(totalPages > 1) {
-                loadList(totalPages -1);
+                // Load the previous page (current page - 1)
+                loadList(totalPages - 1);
             }
             else {
+                // Load the first page
                 loadList(1);
             }
         }
         else {
+            // Reload the current page
             loadList(currentPage);
         }
     }
+
 }

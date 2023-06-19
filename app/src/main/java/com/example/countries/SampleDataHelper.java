@@ -21,12 +21,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class SampleDataHelper {
+
+    /**
+     * This class provides helper methods for handling sample data related to countries.
+     */
+
     private final String TAG = Helper.tag(this);
     Context context;
 
     public SampleDataHelper(Context context) {
         this.context = context;
     }
+
+    /**
+     * This method generates a valid JSON file from the raw data and saves it in the cache directory.
+     */
 
     private void generateRawToValidJsonFileAndSaveItInCacheDir() {
         try {
@@ -84,6 +93,10 @@ public class SampleDataHelper {
         }
     }
 
+    /**
+     * This method reads the content of the countries.json file from the cache directory and returns it as a string.
+     */
+
     private String readFileFromCacheDirectory() {
         String fileContent = "";
         try {
@@ -108,6 +121,10 @@ public class SampleDataHelper {
         return fileContent;
     }
 
+    /**
+     * This method retrieves a list of countries from the generated JSON file.
+     */
+
     public ArrayList<Country> getCountriesArrayList() {
         generateRawToValidJsonFileAndSaveItInCacheDir();
         String raw = readFileFromCacheDirectory();
@@ -129,5 +146,4 @@ public class SampleDataHelper {
         }
         return countryList;
     }
-
 }

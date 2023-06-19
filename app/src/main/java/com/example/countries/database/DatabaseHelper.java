@@ -14,10 +14,10 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+
     private static final String DB_NAME = "app_database";
     private static final int DB_VERSION = 2;
     private final String TAG = Helper.tag(this);
-    Context context;
     private RuntimeExceptionDao<Country, Integer> countryDao;
 
     public DatabaseHelper(Context context) {
@@ -38,7 +38,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource, Country.class, false);
-            onCreate(database);
+            onCreate(database, connectionSource);
         } catch (SQLException e) {
             Log.d(TAG, "onUpgrade: " + e.getMessage());
             throw new RuntimeException(e);
@@ -52,7 +52,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      * @return The RuntimeExceptionDao instance for the Country entity.
      */
     public RuntimeExceptionDao<Country, Integer> getCountryDao() {
-        if (countryDao == null) countryDao = getRuntimeExceptionDao(Country.class);
+        if (countryDao == null) {
+            countryDao = getRuntimeExceptionDao(Country.class);
+        }
         return countryDao;
     }
 
@@ -61,5 +63,4 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         countryDao = null;
         super.close();
     }
-
 }
