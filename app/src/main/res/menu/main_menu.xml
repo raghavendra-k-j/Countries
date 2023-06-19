@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="HardcodedText">
+
+    <item
+        android:id="@+id/main_toolbar_menu_item_search"
+        android:title="Search"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_search_on_surface" />
+
+    <item
+        android:id="@+id/main_toolbar_menu_item_add"
+        android:title="Add"
+        android:icon="@drawable/ic_add_on_surface"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/main_toolbar_menu_item_add_sample_data"
+        android:title="Add Dummy Data"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/main_toolbar_menu_item_clean_data"
+        android:title="Clean Database"
+        app:showAsAction="never" />
+
+</menu>

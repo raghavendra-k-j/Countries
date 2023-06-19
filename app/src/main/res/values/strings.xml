@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Countries</string>
+    <string name="app_desc">ORMLite Example App</string>
+    <string name="no_countries_found_text">No countries found\nClick the \'+\' icon to add new countries</string>
+</resources>

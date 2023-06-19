@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:background="@color/surface"
+        android:id="@+id/main_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            app:contentInsetStartWithNavigation="0dp"
+            app:titleTextAppearance="@style/Widget.MainToolbar.TitleTextAppearance"
+            app:subtitleTextAppearance="@style/Widget.MainToolbar.SubTitleTextAppearance"
+            app:navigationIcon="@drawable/ic_nav_icon"
+            app:titleTextColor="@color/onSurfaceDark"
+            app:subtitleTextColor="@color/onSurfaceMedium"
+            app:title="@string/app_name"
+            app:subtitle="@string/app_desc"
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:visibility="gone"
+            android:layout_margin="8dp"
+            android:id="@+id/main_edit_text_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:background="@drawable/edit_text_rounded_on_background"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:background="@color/background"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:paddingBottom="8dp"
+            android:clipToPadding="false"
+            android:id="@+id/main_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/main_pagination_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:background="@color/strokeBetweenBackgroundAndSurface"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:background="@color/surface"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:background="@drawable/btn_circle_on_surface_grey"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
+                android:src="@drawable/ic_left"
+                android:id="@+id/main_btn_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/onSurfaceMedium"
+                android:layout_weight="1"
+                android:text="01 Pages"
+                android:id="@+id/main_text_view_total_items"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/onSurfaceMedium"
+                android:layout_weight="1"
+                android:text="00/00"
+                android:id="@+id/main_text_view_page_info"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:background="@drawable/btn_circle_on_surface_grey"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
+                android:src="@drawable/ic_right"
+                android:id="@+id/main_btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
